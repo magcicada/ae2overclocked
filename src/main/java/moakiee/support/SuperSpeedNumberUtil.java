@@ -15,15 +15,22 @@ public final class SuperSpeedNumberUtil {
     private SuperSpeedNumberUtil() {
     }
 
+    /** Bus speed boost only; ExtendedAE applies its own busSpeed separately. */
     public static int convertLongToIntSaturating(long value) {
-        long result = value * ae2oc_getSuperSpeedMultiplier() * ae2oc_getExtendedAeBusSpeed();
-        if (result > Integer.MAX_VALUE) {
+        int multiplier = ae2oc_getSuperSpeedMultiplier();
+        if (value > Integer.MAX_VALUE / multiplier) {
             return Integer.MAX_VALUE;
-        } else if (result < Integer.MIN_VALUE) {
-            return Integer.MIN_VALUE;
-        } else {
-            return (int) result;
         }
+        if (value < Integer.MIN_VALUE / multiplier) {
+            return Integer.MIN_VALUE;
+        }
+        return (int) (value * multiplier);
+    }
+
+    /** Both operands are ints, so their product fits in a long before clamping. */
+    public static int multiplyIntSaturating(int value, int multiplier) {
+        long result = (long) value * multiplier;
+        return (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, result));
     }
 
     public static long boostLongSaturating(long value) {

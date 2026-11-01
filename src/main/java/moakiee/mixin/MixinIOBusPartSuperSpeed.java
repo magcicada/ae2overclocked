@@ -17,13 +17,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(IOBusPart.class)
 public abstract class MixinIOBusPartSuperSpeed implements IUpgradeableObject {
 
-    @Inject(method = "getOperationsPerTick", at = @At("RETURN"), cancellable = true, remap = false)
+    @Inject(method = "getOperationsPerTick", at = @At("RETURN"), cancellable = true, require = 1, remap = false)
     private void ae2oc_boostBySuperSpeedCard(CallbackInfoReturnable<Integer> cir) {
         int superSpeedUpgrades = getInstalledUpgrades(ModItems.SUPER_SPEED_CARD.get());
         if (superSpeedUpgrades <= 0) {
             return;
         }
 
+        // Only apply the card multiplier here; ExtendedAE owns its busSpeed factor.
         int result = moakiee.support.SuperSpeedNumberUtil.convertLongToIntSaturating(cir.getReturnValue());
         cir.setReturnValue(result);
     }
