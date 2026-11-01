@@ -30,16 +30,14 @@ public abstract class MixinAppEngSlot {
 
     /**
      * 多名称注入：dev 环境用 getMaxStackSize，运行时用 m_5866_（SRG 名）。
-     * require = 0 保证在任一环境中不崩溃。
+     * require = 1 保证在任一环境中不崩溃。
      */
     @Inject(
-            method = {
-                "getMaxStackSize(Lnet/minecraft/world/item/ItemStack;)I",
-                "m_5866_(Lnet/minecraft/world/item/ItemStack;)I"
-            },
+            method = "getMaxStackSize(Lnet/minecraft/world/item/ItemStack;)I",
+            remap = true,
             at = @At("HEAD"),
             cancellable = true,
-            require = 0
+            require = 1
     )
     private void ae2oc_getMaxStackSize(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
         // 跳过不可堆叠物品（工具/盔甲）和 GenericStack 流体封装（maxStackSize=1）

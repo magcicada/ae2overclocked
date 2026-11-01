@@ -32,13 +32,11 @@ public abstract class MixinAEBaseMenu {
     protected abstract ItemStack transferStackToMenu(ItemStack input);
 
     @Inject(
-            method = {
-                    "quickMoveStack(Lnet/minecraft/world/entity/player/Player;I)Lnet/minecraft/world/item/ItemStack;",
-                    "m_7648_(Lnet/minecraft/world/entity/player/Player;I)Lnet/minecraft/world/item/ItemStack;"
-            },
+            method = "quickMoveStack(Lnet/minecraft/world/entity/player/Player;I)Lnet/minecraft/world/item/ItemStack;",
+            remap = true,
             at = @At("HEAD"),
             cancellable = true,
-            require = 0
+            require = 1
     )
     private void ae2oc_quickMoveStack(Player player, int idx, CallbackInfoReturnable<ItemStack> cir) {
         AEBaseMenu menu = (AEBaseMenu) (Object) this;

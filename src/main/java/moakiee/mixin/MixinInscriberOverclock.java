@@ -52,22 +52,22 @@ public abstract class MixinInscriberOverclock {
 
     // ========== Shadow 访问原版字段和方法 ==========
 
-    @Shadow
+    @Shadow(remap = false)
     private boolean smash;
 
-    @Shadow
+    @Shadow(remap = false)
     private int finalStep;
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract InscriberRecipe getTask();
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract int getMaxProcessingTime();
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract int getProcessingTime();
 
-    @Shadow
+    @Shadow(remap = false)
     protected abstract void setSmash(boolean smash);
 
     /**

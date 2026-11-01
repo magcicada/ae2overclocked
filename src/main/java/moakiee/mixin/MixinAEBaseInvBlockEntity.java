@@ -27,12 +27,10 @@ public abstract class MixinAEBaseInvBlockEntity {
      * saveAdditional TAIL: 重写超过 64 的槽位数据。
      */
     @Inject(
-            method = {
-                    "saveAdditional(Lnet/minecraft/nbt/CompoundTag;)V",
-                    "m_183515_(Lnet/minecraft/nbt/CompoundTag;)V"
-            },
+            method = "saveAdditional(Lnet/minecraft/nbt/CompoundTag;)V",
+            remap = true,
             at = @At("TAIL"),
-            require = 0
+            require = 1
     )
     private void ae2oc_saveAdditionalTail(CompoundTag data, CallbackInfo ci) {
         var inv = this.getInternalInventory();
@@ -80,12 +78,10 @@ public abstract class MixinAEBaseInvBlockEntity {
      * loadTag TAIL: 从 ae2ocCount 标记恢复超量堆叠，并清理遗留标签。
      */
     @Inject(
-            method = {
-                    "loadTag(Lnet/minecraft/nbt/CompoundTag;)V",
-                    "m_155245_(Lnet/minecraft/nbt/CompoundTag;)V"
-            },
+            method = "loadTag(Lnet/minecraft/nbt/CompoundTag;)V",
+            remap = false,
             at = @At("TAIL"),
-            require = 0
+            require = 1
     )
     private void ae2oc_loadTagTail(CompoundTag data, CallbackInfo ci) {
         if (!data.contains("inv")) {
